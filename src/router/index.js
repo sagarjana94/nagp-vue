@@ -23,6 +23,16 @@ const routes = [
         name: 'settings',
         component: () => import(/* webpackChunkName: "settings" */ '@/views/Settings.vue'),
     },
+    {
+        path: '/@:username',
+        name: 'profile',
+        component: () => import(/* webpackChunkName: "profile" */ '@/views/Profile.vue'),
+    },
+    {
+        path: '/editor',
+        name: 'editor',
+        component: () => import(/* webpackChunkName: "editor" */ '@/views/Editor.vue'),
+    }
 ];
 const router = new VueRouter({
     routes,

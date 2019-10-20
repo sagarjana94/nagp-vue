@@ -1,26 +1,46 @@
 <template>
     <nav class="navbar navbar-light">
         <div class="container">
-            <a class="navbar-brand" href="index.html">NAGP Blogger</a>
+            <router-link class="navbar-brand" to="/">NAGP Blogger</router-link>
             <ul class="nav navbar-nav pull-xs-right">
                 <li class="nav-item">
                 <!-- Add "active" class when you're on that page" -->
-                    <a class="nav-link active" href="">Home</a>
+                    <router-link class="nav-link active" to="/">Home</router-link>
                 </li>
-                <li class="nav-item">
-                <a class="nav-link" href="">
-                    <i class="ion-compose"></i>&nbsp;New Post
-                </a>
+                <li class="nav-item" v-if="username">
+                    <router-link class="nav-link" to="/editor">
+                        <i class="ion-compose"></i>&nbsp;New Article
+                    </router-link>
                 </li>
-                <li class="nav-item">
-                <a class="nav-link" href="">
-                    <i class="ion-gear-a"></i>&nbsp;Settings
-                </a>
+                <li class="nav-item" v-if="username">
+                    <router-link class="nav-link" to="/settings">
+                        <i class="ion-gear-a"></i>&nbsp;Settings
+                    </router-link>
                 </li>
-                <li class="nav-item">
-                <a class="nav-link" href="">Sign up</a>
+                <li class="nav-item" v-if="username">
+                    <router-link class="nav-link" :to="'/@' + username">
+                        {{username}}
+                    </router-link>
+                </li>
+                <li class="nav-item" v-if="!username">
+                    <router-link class="nav-link" to="/register">Sign up</router-link>
+                </li>
+                <li class="nav-item" v-if="!username">
+                    <router-link class="nav-link" to="/login">Sign in</router-link>
                 </li>
             </ul>
         </div>
     </nav>
 </template>
+
+<script lang="ts">
+import { Vue, Component } from 'vue-property-decorator';
+import users from '@/store/modules/users';
+
+@Component
+export default class AppHeader extends Vue {
+  get username(){
+      return users.username;
+  }
+}
+</script>
