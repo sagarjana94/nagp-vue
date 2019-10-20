@@ -1,23 +1,22 @@
 <template>
   <div id="app">
-    <AppHeader></AppHeader>
+    <AppHeader />
     <router-view></router-view>
-    <AppFooter></AppFooter>
+    <AppFooter />
   </div>
 </template>
 
-<script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
-import AppFooter from '@/components/AppFooter.vue';
-import AppHeader from '@/components/AppHeader.vue';
+<script>
+import AppHeader from "@/components/AppHeader";
+import AppFooter from "@/components/AppFooter";
 
-@Component({
+export default {
+  name: "App",
   components: {
-    AppFooter, AppHeader,
-  },
-})
-export default class App extends Vue {}
+    AppHeader,
+    AppFooter
+  }
+};
 </script>
 
-<style>
-</style>
+<style></style>

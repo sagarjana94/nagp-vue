@@ -1,10 +1,18 @@
 <template>
-    <footer>
-      <div class="container">
-        <a href="/" class="logo-font">NAGP Blogger</a>
-        <span class="attribution">
-          A blogging site for NAGP employees. Code &amp; design licensed by <b>Sagar Jana</b>.
-        </span>
-      </div>
-    </footer>
+  <footer>
+    <div class="container">
+      <router-link class="logo-font" :to="{ name: 'home', params: {} }">
+        NAGP Blogger
+      </router-link>
+      <span class="attribution">
+        An interactive blogging site by <b>Sagar Jana</b>
+      </span>
+    </div>
+  </footer>
 </template>
+
+<script>
+export default {
+  name: "AppFooter"
+};
+</script>

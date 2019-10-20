@@ -1,41 +1,76 @@
-import Vue from 'vue';
-import VueRouter from 'vue-router';
-import Home from '../views/Home.vue';
-Vue.use(VueRouter);
-const routes = [
+import Vue from "vue";
+import Router from "vue-router";
+
+Vue.use(Router);
+
+export default new Router({
+  routes: [
     {
-        path: '/',
-        name: 'home',
-        component: Home,
+      path: "/",
+      component: () => import("@/views/Home"),
+      children: [
+        {
+          path: "",
+          name: "home",
+          component: () => import("@/views/HomeGlobal")
+        },
+        {
+          path: "my-feed",
+          name: "home-my-feed",
+          component: () => import("@/views/HomeMyFeed")
+        },
+        {
+          path: "tag/:tag",
+          name: "home-tag",
+          component: () => import("@/views/HomeTag")
+        }
+      ]
     },
     {
-        path: '/login',
-        name: 'login',
-        component: () => import(/* webpackChunkName: "login" */ '@/views/Login.vue'),
+      name: "login",
+      path: "/login",
+      component: () => import("@/views/Login")
     },
     {
-        path: '/register',
-        name: 'register',
-        component: () => import(/* webpackChunkName: "register" */ '@/views/Register.vue'),
+      name: "register",
+      path: "/register",
+      component: () => import("@/views/Register")
     },
     {
-        path: '/settings',
-        name: 'settings',
-        component: () => import(/* webpackChunkName: "settings" */ '@/views/Settings.vue'),
+      name: "settings",
+      path: "/settings",
+      component: () => import("@/views/Settings")
+    },
+    // Handle child routes with a default, by giving the name to the
+    // child.
+    // SO: https://github.com/vuejs/vue-router/issues/777
+    {
+      path: "/@:username",
+      component: () => import("@/views/Profile"),
+      children: [
+        {
+          path: "",
+          name: "profile",
+          component: () => import("@/views/ProfileArticles")
+        },
+        {
+          name: "profile-favorites",
+          path: "favorites",
+          component: () => import("@/views/ProfileFavorited")
+        }
+      ]
     },
     {
-        path: '/@:username',
-        name: 'profile',
-        component: () => import(/* webpackChunkName: "profile" */ '@/views/Profile.vue'),
+      name: "article",
+      path: "/articles/:slug",
+      component: () => import("@/views/Article"),
+      props: true
     },
     {
-        path: '/editor',
-        name: 'editor',
-        component: () => import(/* webpackChunkName: "editor" */ '@/views/Editor.vue'),
+      name: "article-edit",
+      path: "/editor/:slug?",
+      props: true,
+      component: () => import("@/views/ArticleEdit")
     }
-];
-const router = new VueRouter({
-    routes,
+  ]
 });
-export default router;
-//# sourceMappingURL=index.js.map

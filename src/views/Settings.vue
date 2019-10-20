@@ -1,60 +1,88 @@
 <template>
-    <div class="settings-page">
-  <div class="container page">
-    <div class="row">
-
-      <div class="col-md-6 offset-md-3 col-xs-12">
-        <h1 class="text-xs-center">Your Profile</h1>
-
-        <form>
-          <fieldset>
+  <div class="settings-page">
+    <div class="container page">
+      <div class="row">
+        <div class="col-md-6 offset-md-3 col-xs-12">
+          <h1 class="text-xs-center">Your Settings</h1>
+          <form @submit.prevent="updateSettings()">
+            <fieldset>
               <fieldset class="form-group">
-                <input class="form-control" type="text" placeholder="URL of profile picture" v-model="user.image">
+                <input
+                  class="form-control"
+                  type="text"
+                  v-model="currentUser.image"
+                  placeholder="URL of profile picture"
+                />
               </fieldset>
               <fieldset class="form-group">
-                <input class="form-control form-control-lg" type="text" placeholder="Your Name" v-model="user.username">
+                <input
+                  class="form-control form-control-lg"
+                  type="text"
+                  v-model="currentUser.username"
+                  placeholder="Your username"
+                />
               </fieldset>
               <fieldset class="form-group">
-                <textarea class="form-control form-control-lg" rows="8" placeholder="Short bio about you" v-model="user.bio"></textarea>
+                <textarea
+                  class="form-control form-control-lg"
+                  rows="8"
+                  v-model="currentUser.bio"
+                  placeholder="Short bio about you"
+                ></textarea>
               </fieldset>
               <fieldset class="form-group">
-                <input class="form-control form-control-lg" type="text" placeholder="Email" v-model="user.email">
+                <input
+                  class="form-control form-control-lg"
+                  type="text"
+                  v-model="currentUser.email"
+                  placeholder="Email"
+                />
               </fieldset>
               <fieldset class="form-group">
-                <input class="form-control form-control-lg" type="password" placeholder="Password" v-model="user.password">
+                <input
+                  class="form-control form-control-lg"
+                  type="password"
+                  v-model="currentUser.password"
+                  placeholder="Password"
+                />
               </fieldset>
-              <button class="btn btn-lg btn-primary pull-xs-right" @click="updateProfile()">
-                Update Profile
+              <button class="btn btn-lg btn-primary pull-xs-right">
+                Update Settings
               </button>
-          </fieldset>
-        </form>
+            </fieldset>
+          </form>
+          <!-- Line break for logout button -->
+          <hr />
+          <button @click="logout" class="btn btn-outline-danger">
+            Or click here to logout.
+          </button>
+        </div>
       </div>
-
     </div>
   </div>
-</div>
 </template>
 
-<script lang="ts">
-import { Vue, Component } from 'vue-property-decorator';
-import { UserForUpdate } from '@/store/models';
-import users from '@/store/modules/users';
+<script>
+import { mapGetters } from "vuex";
+import { LOGOUT, UPDATE_USER } from "@/store/actions.type";
 
-@Component
-export default class Settings extends Vue {
-   user: UserForUpdate = {};
-
-  created() {
-    this.user = users.user || {};
+export default {
+  name: "RwvSettings",
+  computed: {
+    ...mapGetters(["currentUser"])
+  },
+  methods: {
+    updateSettings() {
+      this.$store.dispatch(UPDATE_USER, this.currentUser).then(() => {
+        // #todo, nice toast and no redirect
+        this.$router.push({ name: "home" });
+      });
+    },
+    logout() {
+      this.$store.dispatch(LOGOUT).then(() => {
+        this.$router.push({ name: "home" });
+      });
+    }
   }
-  public async updateProfile() {
-    await users.updateProfile({
-      email: this.user.email,
-      bio: this.user.bio,
-      image: this.user.image,
-      password: this.user.password,
-      username: this.user.username
-    });
-  }
-}
+};
 </script>
